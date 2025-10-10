@@ -1,4 +1,4 @@
-## wsb — lightweight rooms/broadcasting for Fiber WebSockets
+## Fiber Wsb — lightweight rooms/broadcasting for Fiber WebSockets
 
 Small, thread-safe, in-memory broadcaster for `github.com/gofiber/contrib/websocket` that helps you:
 - Manage rooms and connections
