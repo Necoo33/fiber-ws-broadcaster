@@ -198,6 +198,13 @@ func (r *Room) RemoveIfNot(cond func(*Connection) bool) {
 	}
 }
 
+func (r *Room) IsRoomEmpty() bool {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	return len(r.clients) == 0
+}
+
 // checks if a connection exists in the room by id
 func (r *Room) CheckConnectionById(id string) bool {
 	r.mu.RLock()
