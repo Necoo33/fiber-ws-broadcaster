@@ -1,6 +1,6 @@
-module github.com/Necoo33/fiber-ws-broadcaster
+module github.com/Necoo33/fiber-ws-broadcaster/v2
 
-go 1.25.1
+go 1.26.2
 
 require (
 	github.com/gofiber/contrib/v3/websocket v1.1.1 // indirect
