@@ -3,8 +3,8 @@ package wsb
 import (
 	"testing"
 
-	"github.com/gofiber/contrib/websocket"
-	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/contrib/v3/websocket"
+	"github.com/gofiber/fiber/v3"
 )
 
 func TestBroadcaster(t *testing.T) {
@@ -19,7 +19,7 @@ func TestBroadcaster(t *testing.T) {
 	Broadcaster := New()
 
 	// home page
-	server.Get("/", func(c *fiber.Ctx) error {
+	server.Get("/", func(c fiber.Ctx) error {
 		c.Set("Content-Type", "text/html; charset=utf-8")
 
 		HomeHtml := `<!DOCTYPE html>
@@ -45,7 +45,7 @@ func TestBroadcaster(t *testing.T) {
 	})
 
 	// chat page
-	server.Get("/chat", func(c *fiber.Ctx) error {
+	server.Get("/chat", func(c fiber.Ctx) error {
 		c.Set("Content-Type", "text/html; charset=utf-8")
 
 		ChatHtml := `<!DOCTYPE html>
@@ -156,7 +156,7 @@ func TestBroadcaster(t *testing.T) {
 	})
 
 	// websocket upgrade middleware
-	server.Use("/chats", func(c *fiber.Ctx) error {
+	server.Use("/chats", func(c fiber.Ctx) error {
 		if websocket.IsWebSocketUpgrade(c) {
 			//c.Locals("allowed", true)
 			return c.Next()

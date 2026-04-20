@@ -5,7 +5,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/gofiber/contrib/websocket"
+	"github.com/gofiber/contrib/v3/websocket"
 )
 
 // Connection is a websocket connection
@@ -323,25 +323,25 @@ func (r *Room) BroadcastIfNot(data []byte, ctx any, cond func(*Connection) bool)
 // Broadcaster Methods
 
 // adds a room to the broadcaster
-func (b *Broadcaster) Add(id string) {
+func (b *Broadcaster) Add(room_id string) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
-	if _, exists := b.Rooms[id]; !exists {
-		b.Rooms[id] = &Room{
-			Id:      id,
+	if _, exists := b.Rooms[room_id]; !exists {
+		b.Rooms[room_id] = &Room{
+			Id:      room_id,
 			clients: make(map[*Connection]bool),
 		}
 	}
 }
 
 // returns a room by it's id or nil if it doesn't exist
-func (b *Broadcaster) RoomById(id string) *Room {
+func (b *Broadcaster) RoomById(room_id string) *Room {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
 	for r := range b.Rooms {
-		if r == id {
+		if r == room_id {
 			return b.Rooms[r]
 		}
 	}
@@ -350,11 +350,11 @@ func (b *Broadcaster) RoomById(id string) *Room {
 }
 
 // handles a room with it's id. If it isn't exist, it will be created, otherwise it'll do nothing.
-func (b *Broadcaster) Handle(id string) *Broadcaster {
-	room := b.RoomById(id)
+func (b *Broadcaster) Handle(room_id string) *Broadcaster {
+	room := b.RoomById(room_id)
 
 	if room == nil {
-		b.Add(id)
+		b.Add(room_id)
 	}
 
 	return b
@@ -378,12 +378,12 @@ func (b *Broadcaster) CheckRoom(r *Room) bool {
 }
 
 // checks if a room exists in the broadcaster by id
-func (b *Broadcaster) CheckRoomById(id string) bool {
+func (b *Broadcaster) CheckRoomById(room_id string) bool {
 	b.mu.RLock()
 	defer b.mu.RUnlock()
 
 	for r := range b.Rooms {
-		if r == id {
+		if r == room_id {
 			return true
 		}
 	}
@@ -392,12 +392,12 @@ func (b *Broadcaster) CheckRoomById(id string) bool {
 }
 
 // removes a room from the broadcaster, and closes all connections from the room by id
-func (b *Broadcaster) RemoveById(id string) {
+func (b *Broadcaster) RemoveById(room_id string) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
 
 	for r := range b.Rooms {
-		if r == id {
+		if r == room_id {
 			b.Rooms[r].RemoveAll()
 			delete(b.Rooms, r)
 		}
